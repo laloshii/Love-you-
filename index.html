@@ -4,19 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لقلبي - قصة حبنا</title>
-    <!-- استدعاء خطوط جوجل الراقية -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- استدعاء خطوط أنيقة للغة العربية والإنجليزية -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Great+Vibes&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* المتغيرات الأساسية للألوان */
+        /* المتغيرات الأساسية للألوان بناءً على الصور */
         :root {
-            --bg-color: #fcf9f2;
-            --text-color: #5c4033;
-            --gold: #d4af37;
-            --card-bg: rgba(255, 255, 255, 0.65);
-            --pink-accent: #f9e1e5;
-            --shadow: 0 15px 35px rgba(92, 64, 51, 0.1);
-            --border-radius: 25px;
+            --plaid-pink: #ffdce3;
+            --plaid-white: #ffffff;
+            --paper-bg: #fff5f5;
+            --text-red: #9e3d49;
+            --btn-border: #726255;
+            --btn-bg: #f8f1eb;
         }
 
         * {
@@ -27,623 +26,399 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             font-family: 'Tajawal', sans-serif;
             overflow-x: hidden;
-            background-image: radial-gradient(#d4af37 0.5px, transparent 0.5px);
-            background-size: 30px 30px;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Amiri', serif;
-            color: #8a6c51;
-            font-weight: 700;
-        }
-
-        /* ---------------- Loading Screen ---------------- */
-        #loading-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #050505;
+        /* نافذة الماك (لتشبه الصورة تماماً) */
+        .mac-window {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 1s ease-in-out;
-        }
-        .beating-heart {
-            font-size: 5rem;
-            animation: beat 1s infinite alternate;
-            filter: drop-shadow(0 0 15px rgba(255,0,0,0.8));
-        }
-        .loading-text {
-            color: #fff;
-            margin-top: 20px;
-            font-family: 'Amiri', serif;
-            font-size: 1.5rem;
-            opacity: 0.8;
-            letter-spacing: 2px;
-        }
-        @keyframes beat {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.3); }
-        }
-
-        /* ---------------- Global Classes ---------------- */
-        .section {
             min-height: 100vh;
+        }
+
+        @media (min-width: 768px) {
+            .mac-window {
+                min-height: 90vh;
+                margin: 20px 0;
+            }
+        }
+
+        /* شريط النافذة العلوي */
+        .title-bar {
+            background: #f1f1f1;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            gap: 8px;
+            border-bottom: 1px solid #ddd;
+            direction: ltr;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+
+        /* منطقة المحتوى (خلفية المربعات الزهرية) */
+        .content-area {
+            flex-grow: 1;
+            background-color: var(--plaid-pink);
+            background-image: 
+                linear-gradient(90deg, rgba(255,255,255,0.6) 50%, transparent 50%),
+                linear-gradient(rgba(255,255,255,0.6) 50%, transparent 50%);
+            background-size: 40px 40px;
+            position: relative;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 50px 20px;
-            position: relative;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1s ease-out;
+            overflow-y: auto;
         }
-        .section.visible {
+
+        /* البطاقة الورقية (شكل ممزق ولطيف) */
+        .paper-card {
+            background: var(--paper-bg);
+            width: 100%;
+            max-width: 500px;
+            /* شكل حواف غير منتظم لتبدو كالورقة */
+            border-radius: 15px 30px 20px 40px;
+            box-shadow: 3px 5px 15px rgba(0,0,0,0.1);
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-in-out;
+            display: none; /* سيتم إظهارها عبر الجافاسكربت */
+        }
+
+        .paper-card.active {
+            display: block;
             opacity: 1;
             transform: translateY(0);
         }
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: var(--border-radius);
-            padding: 40px;
-            box-shadow: var(--shadow);
-            max-width: 800px;
-            width: 100%;
-            text-align: center;
-            position: relative;
-        }
-        .btn {
-            background: var(--text-color);
-            color: #fff;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .btn:hover {
-            background: var(--gold);
-            transform: translateY(-3px);
-        }
 
-        /* ---------------- Hero Section ---------------- */
-        #hero {
-            background: #0b0c10;
-            color: #fff;
-            text-align: center;
-            overflow: hidden;
-        }
-        #hero::before {
-            content: '';
+        /* زينة الوردة في الزاوية */
+        .floral-corner {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            animation: moveStars 50s linear infinite;
-        }
-        @keyframes moveStars {
-            from { background-position: 0 0; }
-            to { background-position: 1000px 1000px; }
-        }
-        #hero h1 {
-            font-size: 4rem;
-            color: #fcf9f2;
-            z-index: 2;
-            text-shadow: 0 0 20px rgba(255,255,255,0.3);
-        }
-        #hero p {
-            font-size: 1.5rem;
-            margin: 20px 0;
-            z-index: 2;
-            color: #ddd;
+            top: -15px;
+            right: -15px;
+            width: 100px;
+            pointer-events: none;
+            opacity: 0.9;
         }
 
-        /* ---------------- Cute Question Card ---------------- */
-        .cute-gif {
-            width: 180px;
-            border-radius: 20px;
+        /* النصوص الإنجليزية الأنيقة */
+        .english-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.8rem;
+            color: var(--text-red);
             margin-bottom: 20px;
-        }
-        .question-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-            position: relative;
-            height: 60px;
-        }
-        .btn-yes {
-            background: #4CAF50;
-        }
-        .btn-yes:hover { background: #45a049; }
-        .btn-no {
-            background: #f44336;
-            position: absolute;
-            transition: 0.2s ease-in-out;
+            line-height: 1.2;
         }
 
-        /* ---------------- Timeline & Counter ---------------- */
-        .counter-box {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-            direction: ltr;
+        /* النصوص العربية الأنيقة والمستقيمة */
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            font-size: 1.6rem;
+            color: var(--text-red);
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-style: normal; /* تأكيد عدم الميلان */
         }
-        .time-box {
-            background: rgba(255,255,255,0.8);
-            padding: 15px 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        
+        .arabic-body {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.1rem;
+            color: #554345;
+            line-height: 1.8;
+            font-weight: 500;
         }
-        .time-box span {
+
+        /* الصور المتحركة (الدباديب) */
+        .cute-gif {
+            width: 130px;
+            margin: 10px auto 20px;
             display: block;
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--text-color);
-        }
-        .time-box p {
-            font-size: 0.9rem;
-            color: #8a6c51;
-            margin: 0;
         }
 
-        /* ---------------- Distance Section ---------------- */
-        .map-container {
-            position: relative;
-            width: 100%;
-            height: 300px;
-            background: url('https://www.transparenttextures.com/patterns/notebook.png');
-            border-radius: 20px;
-            border: 2px dashed #ccc;
-            margin-top: 30px;
+        /* الأزرار الكيوت */
+        .btn-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 50px;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            min-height: 40px;
         }
-        .pin {
-            text-align: center;
-            z-index: 2;
+        .cute-btn {
+            background: var(--btn-bg);
+            border: 2px solid var(--btn-border);
+            color: var(--btn-border);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 5px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 2px 3px 0px rgba(114, 98, 85, 0.2);
+            transition: 0.2s;
         }
-        .pin i {
-            font-size: 2.5rem;
-            color: #d32f2f;
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .thread {
-            position: absolute;
-            top: 50%;
-            left: 10%;
-            width: 0;
-            height: 3px;
-            background: #d32f2f;
-            z-index: 1;
-            transition: width 3s ease-in-out;
-        }
-        .airplane {
-            position: absolute;
-            top: 40%;
-            left: 10%;
-            font-size: 1.5rem;
-            transition: left 3s ease-in-out;
-            opacity: 0;
+        .cute-btn:hover {
+            background: #fff;
+            transform: translateY(-2px);
         }
 
-        /* ---------------- Envelopes (Open When) ---------------- */
-        .envelopes-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+        /* --- الأقسام المخفية للأسفل --- */
+        #main-content {
+            display: none; /* يظهر بعد الواجهة */
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
         }
-        .envelope-wrapper {
-            perspective: 1000px;
-            cursor: pointer;
-            height: 250px;
+
+        /* رسائل الظروف */
+        .envelope-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 20px;
         }
         .envelope {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-        }
-        .envelope.is-opened {
-            transform: rotateY(180deg);
-        }
-        .env-front, .env-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-shadow: var(--shadow);
-        }
-        .env-front {
             background: #fff;
-            border: 2px solid var(--pink-accent);
-        }
-        .env-back {
-            background: var(--pink-accent);
-            transform: rotateY(180deg);
-            color: var(--text-color);
-            text-align: center;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        /* ---------------- Floating Music Player ---------------- */
-        #music-player {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(255,255,255,0.9);
-            padding: 10px 20px;
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            border: 2px dashed #ffb6c1;
+            padding: 15px;
+            border-radius: 15px;
             cursor: pointer;
+            transition: 0.3s;
         }
-        .vinyl {
-            width: 30px;
-            height: 30px;
-            background: #000;
-            border-radius: 50%;
-            border: 2px solid #555;
-            animation: spin 3s linear infinite;
-            animation-play-state: paused;
+        .envelope:hover { background: #fff0f2; }
+        .envelope-content {
+            display: none;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ffe0e5;
+            font-family: 'Amiri', serif;
+            color: var(--text-red);
+            font-size: 1.2rem;
+            line-height: 1.7;
         }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* ---------------- Final Section ---------------- */
-        #final-screen {
-            background: #000;
-            color: #fff;
-            text-align: center;
-        }
-        .typewriter h2 {
-            overflow: hidden;
-            border-left: .15em solid #fff;
-            white-space: nowrap;
-            margin: 0 auto;
-            letter-spacing: .15em;
-            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
-            color: #fff;
-        }
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #fff; } }
 
     </style>
 </head>
 <body>
 
-    <!-- شاشة التحميل -->
-    <div id="loading-screen">
-        <div class="beating-heart">❤️</div>
-        <div class="loading-text">جاري تحميل قطعة من قلبي...</div>
-    </div>
-
-    <!-- مشغل الموسيقى العائم -->
-    <div id="music-player" onclick="toggleMusic()">
-        <div class="vinyl" id="vinyl-disc"></div>
-        <span id="music-text">تشغيل الموسيقى 🎵</span>
-        <!-- رابط موسيقى هادئة ورومانسية -->
-        <audio id="bg-audio" loop>
-            <source src="https://www.bensound.com/bensound-music/bensound-tenderness.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-
-    <!-- الواجهة الرئيسية -->
-    <section id="hero" class="section">
-        <h1>إلى الفتى الذي سرق قلبي ❤️</h1>
-        <p>هذا ليس مجرد موقع. إنها كل مشاعري التي لم تتسع لها رسالة.</p>
-        <button class="btn" onclick="document.getElementById('question').scrollIntoView();">افتح قلبي</button>
-    </section>
-
-    <!-- بطاقة سؤال: هل تحبني؟ -->
-    <section id="question" class="section">
-        <div class="glass-card">
-            <!-- صورة دبدوب كيوت -->
-            <img src="https://media.tenor.com/2RoZbEqZqT0AAAAj/peach-goma.gif" alt="Cute Bears" class="cute-gif">
-            <h2>سؤال صغير قبل أن نكمل... هل تحبني؟</h2>
-            <div class="question-buttons" id="q-buttons">
-                <button class="btn btn-yes" onclick="answeredYes()">نعم، بالتأكيد!</button>
-                <button class="btn btn-no" id="btn-no" onmouseover="moveNoBtn()" onclick="moveNoBtn()">لا</button>
-            </div>
-            <div id="yes-response" style="display:none; margin-top: 20px;">
-                <h3 style="color: #4CAF50;">وأنا أعشقك يا روح الروح! ❤️</h3>
-                <img src="https://media.tenor.com/PZcT28CptXAAAAAj/peach-and-goma-peach-cat.gif" alt="Happy Bears" class="cute-gif" style="margin-top:15px; width:120px;">
-                <br>
-                <button class="btn" onclick="document.getElementById('story').scrollIntoView();">لنكمل رحلتنا</button>
-            </div>
+    <div class="mac-window">
+        <!-- شريط الماك -->
+        <div class="title-bar">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
         </div>
-    </section>
 
-    <!-- قسم القصة -->
-    <section id="story" class="section">
-        <div class="glass-card">
-            <h2>من حيث بدأ كل شيء</h2>
-            <p style="font-size: 1.2rem; line-height: 1.8; margin-top: 20px;">
-                لم يكن هناك لقاء أول، ولا موعد غرامي في مقهى...<br>
-                فقط محادثة بسيطة، وروحان وجدا بعضهما من خلف الشاشات.<br>
-                هكذا، وبكل بساطة، بدأت أجمل قصة في حياتي.
-            </p>
-        </div>
-    </section>
-
-    <!-- اليوم الأهم (العداد) -->
-    <section id="counter-section" class="section">
-        <div class="glass-card">
-            <h2>23 ديسمبر 2025 ❤️</h2>
-            <p style="font-size: 1.2rem; margin-top: 10px;">
-                هذا هو اليوم الذي أخبرتني فيه أنك تحبني.<br>
-                يوم سأحتفظ به قريباً من قلبي إلى الأبد.
-            </p>
-            <div class="counter-box">
-                <div class="time-box"><span id="days">00</span><p>أيام</p></div>
-                <div class="time-box"><span id="hours">00</span><p>ساعات</p></div>
-                <div class="time-box"><span id="minutes">00</span><p>دقائق</p></div>
-                <div class="time-box"><span id="seconds">00</span><p>ثواني</p></div>
-            </div>
-            <p style="margin-top:20px; font-size: 0.9rem;">معك، كل ثانية هي عمر جديد.</p>
-        </div>
-    </section>
-
-    <!-- قسم المسافة -->
-    <section id="distance" class="section">
-        <div class="glass-card">
-            <h2>مسافات تفرقنا، وقلوب تجمعنا</h2>
-            <p>قد تفرقنا الدول، لكن لن تفترق قلوبنا أبداً. المسافة لم تزد قصتنا إلا جمالاً.</p>
+        <!-- مساحة المحتوى -->
+        <div class="content-area" id="scroll-area">
             
-            <div class="map-container" id="map-area">
-                <div class="pin">
-                    <span style="font-size: 2rem;">🇹🇷</span><br>
-                    <strong>تركيا</strong>
+            <!-- الشاشة 1: I made something for you -->
+            <div class="paper-card active" id="step1">
+                <!-- زهرة من الإنترنت شفافة لتشبه الزينة -->
+                <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                <div class="english-text">I made something<br>for you</div>
+                <img src="https://media.tenor.com/PZcT28CptXAAAAAj/peach-and-goma-peach-cat.gif" class="cute-gif" alt="cat">
+                <div class="btn-container">
+                    <button class="cute-btn" onclick="nextStep(2)">what?</button>
                 </div>
+            </div>
+
+            <!-- الشاشة 2: Do you love me? -->
+            <div class="paper-card" id="step2">
+                <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                <div class="english-text">Do you love me?</div>
+                <img src="https://media.tenor.com/81Y7y6U6D6wAAAAj/tkthao219-bubududu.gif" class="cute-gif" alt="bears hugging">
+                <div class="btn-container" id="love-buttons">
+                    <button class="cute-btn" onclick="sayYes()">yes</button>
+                    <button class="cute-btn" id="btn-no" onclick="sayNo()">no</button>
+                </div>
+            </div>
+
+            <!-- الشاشة 3: Please say yes (تظهر فقط إذا كبس لا) -->
+            <div class="paper-card" id="step-please-yes">
+                <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                <div class="english-text">please say<br>yes!</div>
+                <img src="https://media.tenor.com/T0bS1Y4L-P0AAAAj/sad-bear.gif" class="cute-gif" alt="sad cat">
+                <div class="btn-container">
+                    <button class="cute-btn" onclick="sayYes()">fine</button>
+                </div>
+            </div>
+
+            <!-- باقي الموقع (يظهر بعد الموافقة) -->
+            <div id="main-content">
                 
-                <div class="thread" id="red-thread"></div>
-                <div class="airplane" id="plane">✈️</div>
-
-                <div class="pin">
-                    <span style="font-size: 2rem;">🇱🇧</span><br>
-                    <strong>لبنان</strong>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- رسائل وقت الحاجة (Open When) -->
-    <section id="letters" class="section">
-        <div class="glass-card" style="max-width: 1000px;">
-            <h2>افتح هذه الرسائل عندما... 💌</h2>
-            <p>اضغط على الظرف لتقرأ رسالتي لك.</p>
-            
-            <div class="envelopes-container">
-                <!-- ظرف 1 -->
-                <div class="envelope-wrapper" onclick="this.querySelector('.envelope').classList.toggle('is-opened')">
-                    <div class="envelope">
-                        <div class="env-front">
-                            <img src="https://media.tenor.com/T0bS1Y4L-P0AAAAj/sad-bear.gif" width="80" alt="sad">
-                            <h3>تكون حزين</h3>
-                        </div>
-                        <div class="env-back">
-                            يا مهجة الروح ما بالك من الحزن؟<br>
-                            لا بأس فأنا معك، كلف كلماتك عناء المشقة وبحها لي.<br>
-                            دعني أكن لك بيتك الدافئ.<br>
-                            لا تبتئس فإن الله معنا.
-                        </div>
-                    </div>
+                <!-- قصة البداية -->
+                <div class="paper-card active">
+                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                    <h2 class="arabic-text">من حيث بدأ كل شيء</h2>
+                    <img src="https://media.tenor.com/hR-A6O9l0p0AAAAj/milk-and-mocha.gif" class="cute-gif" alt="typing">
+                    <p class="arabic-body">
+                        لم يكن هناك لقاء أول، ولا موعد غرامي...<br>
+                        فقط محادثة بسيطة، وروحان وجدا بعضهما من خلف الشاشات.<br>
+                        هكذا، وبكل بساطة، بدأت أجمل قصة في حياتي.
+                    </p>
                 </div>
 
-                <!-- ظرف 2 -->
-                <div class="envelope-wrapper" onclick="this.querySelector('.envelope').classList.toggle('is-opened')">
-                    <div class="envelope">
-                        <div class="env-front">
-                            <img src="https://media.tenor.com/f_Y7z7w-jZMAAAAj/miss-you.gif" width="80" alt="miss">
-                            <h3>تكون مشتاق</h3>
-                        </div>
-                        <div class="env-back">
-                            وأنا مشتاقتلكككك بالقاف، ياروح الروح انت!<br>
-                            الله يجمعني فيك واحضنك لصدري بقوووووة.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ظرف 3 -->
-                <div class="envelope-wrapper" onclick="this.querySelector('.envelope').classList.toggle('is-opened')">
-                    <div class="envelope">
-                        <div class="env-front">
-                            <img src="https://media.tenor.com/V7cZqgVvE_8AAAAj/tkthao219-bubududu.gif" width="80" alt="fight">
-                            <h3>نكون متزاعلين</h3>
-                        </div>
-                        <div class="env-back">
-                            كله بهون، المهم ما نخسر بعض.<br>
-                            تعال نتناقش ونتصالح وما نكون نحنا والدنيا ع بعض.<br>
-                            وأتذكر...<br>
-                            بحبك ع طووووول.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ظرف 4 -->
-                <div class="envelope-wrapper" onclick="this.querySelector('.envelope').classList.toggle('is-opened')">
-                    <div class="envelope">
-                        <div class="env-front">
-                            <img src="https://media.tenor.com/0F95Q_bLp00AAAAj/bear-cute.gif" width="80" alt="motivate">
-                            <h3>تحتاج تحفيز</h3>
-                        </div>
-                        <div class="env-back">
-                            كل مرة بقلك ياها وبرجع بعيدها، انا شايفة فيك رجل قوي، حنون ودافي وساندة ظهري فيه.<br>
-                            عزيمتك وطاقتك وتعبك لتوصل الي، صدقني رح عوضلك ياها كلها يا روحي.<br>
-                            يسلملي حبيبي القوي.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- مولد الحب العشوائي -->
-    <section id="random-love" class="section">
-        <div class="glass-card">
-            <h2>جرعة حب سريعة 💊❤️</h2>
-            <img src="https://media.tenor.com/81Y7y6U6D6wAAAAj/tkthao219-bubududu.gif" alt="Love" class="cute-gif">
-            <p id="random-msg" style="font-size: 1.3rem; margin: 20px 0; min-height: 60px; font-weight: bold; color: #d32f2f;">
-                اضغط على الزر لترى رسالتي...
-            </p>
-            <button class="btn" onclick="generateMessage()">اضغط هنا ❤️</button>
-        </div>
-    </section>
-
-    <!-- الخاتمة -->
-    <section id="final-screen" class="section">
-        <div class="glass-card" style="background: rgba(0,0,0,0.8); border-color: #333; box-shadow: 0 0 30px rgba(255,255,255,0.1);">
-            <div class="beating-heart" style="font-size: 3rem; margin-bottom: 20px;">❤️</div>
-            <div class="typewriter">
-                <h2 style="color: #fff;">مهما فرقتنا المسافات...</h2>
-            </div>
-            <p style="font-size: 1.5rem; color: #ddd; margin-top: 20px;">ستبقى دائماً مكاني المفضل.</p>
-            <br>
-            <h3 style="color: var(--gold);">شكراً لأنك اخترتني.</h3>
-            <p style="margin-top: 15px; letter-spacing: 3px;">23 • 12 • 2025</p>
-            <h1 style="margin-top: 20px; color: #fff;">أحبك للأبد ❤️</h1>
-        </div>
-    </section>
-
-    <!-- سكريبت التفاعلات -->
-    <script>
-        // --- 1. شاشة التحميل ---
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const loader = document.getElementById('loading-screen');
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 1000);
-            }, 3000);
-        });
-
-        // --- 2. ظهور الأقسام عند التمرير (Scroll Animations) ---
-        const sections = document.querySelectorAll('.section');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                <!-- رسائل افتح عندما -->
+                <div class="paper-card active">
+                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                    <h2 class="arabic-text">افتح هذه الرسائل عندما... 💌</h2>
+                    <p class="arabic-body">اضغط على الظرف لتقرأ رسالتي</p>
                     
-                    // تفعيل حركة خيط المسافة عند الوصول للقسم
-                    if(entry.target.id === 'distance') {
-                        setTimeout(() => {
-                            document.getElementById('red-thread').style.width = '80%';
-                            document.getElementById('plane').style.opacity = '1';
-                            document.getElementById('plane').style.left = '80%';
-                        }, 500);
-                    }
-                }
-            });
-        }, { threshold: 0.15 });
+                    <div class="envelope-grid">
+                        <!-- رسالة 1 -->
+                        <div class="envelope" onclick="toggleEnvelope(this)">
+                            <strong>تكون حزين 🥺</strong>
+                            <div class="envelope-content">
+                                يا مهجة الروح ما بالك من الحزن؟<br>
+                                لا بأس فأنا معك، كلف كلماتك عناء المشقة وبحها لي.<br>
+                                دعني أكن لك بيتك الدافئ.<br>
+                                لا تبتئس فإن الله معنا.
+                            </div>
+                        </div>
 
-        sections.forEach(sec => observer.observe(sec));
+                        <!-- رسالة 2 -->
+                        <div class="envelope" onclick="toggleEnvelope(this)">
+                            <strong>تكون مشتاق 💕</strong>
+                            <div class="envelope-content">
+                                وأنا مشتاقتلكككك بالقاف، ياروح الروح أنت.<br>
+                                الله يجمعني فيك وأحضنك لصدري بقوووووة.
+                            </div>
+                        </div>
 
-        // --- 3. زر "لا" الهارب ---
-        function moveNoBtn() {
-            const btn = document.getElementById('btn-no');
-            // تحريك الزر بشكل عشوائي داخل الحاوية
-            const x = Math.random() * 200 - 100;
-            const y = Math.random() * 100 - 50;
-            btn.style.transform = `translate(${x}px, ${y}px)`;
+                        <!-- رسالة 3 -->
+                        <div class="envelope" onclick="toggleEnvelope(this)">
+                            <strong>نكون متزاعلين 🫣</strong>
+                            <div class="envelope-content">
+                                كله بهون، المهم ما نخسر بعض.<br>
+                                تعال نتناقش ونتصالح وما نكون نحنا والدنيا ع بعض.<br>
+                                وأتذكر...<br>
+                                بحبك ع طووووول.
+                            </div>
+                        </div>
+
+                        <!-- رسالة 4 -->
+                        <div class="envelope" onclick="toggleEnvelope(this)">
+                            <strong>تحتاج تحفيز 💪</strong>
+                            <div class="envelope-content">
+                                كل مرة بقلك ياها وبرجع بعيدها، أنا شايفة فيك رجل قوي، حنون ودافي وساندة ظهري فيه.<br>
+                                عزيمتك وطاقتك وتعبك لتوصل إلي، صدقني رح عوضلك ياها كلها يا روحي.<br>
+                                يسلملي حبيبي القوي.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- زر عشوائي للحب -->
+                <div class="paper-card active">
+                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                    <h2 class="arabic-text">جرعة حب سريعة ❤️</h2>
+                    <p class="arabic-body" id="random-msg">اضغط على الزر لترى رسالتي لك...</p>
+                    <img src="https://media.tenor.com/2RoZbEqZqT0AAAAj/peach-goma.gif" class="cute-gif" alt="kiss">
+                    <button class="cute-btn" onclick="generateMessage()">اضغط هنا</button>
+                </div>
+
+                <!-- الختام -->
+                <div class="paper-card active">
+                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                    <h2 class="arabic-text">وختاماً يا نبض قلبي...</h2>
+                    <p class="arabic-body">
+                        مهما فرقتنا المسافات، ستبقى دائماً مكاني المفضل.<br><br>
+                        <strong>أحبك للأبد ❤️</strong><br>
+                        23 • 12 • 2025
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // دالة التنقل بين الشاشات الافتتاحية
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.paper-card').forEach(card => card.classList.remove('active'));
+            document.getElementById('step' + stepNumber).classList.add('active');
         }
 
-        function answeredYes() {
-            document.getElementById('q-buttons').style.display = 'none';
-            document.getElementById('yes-response').style.display = 'block';
-        }
-
-        // --- 4. العداد الزمني (من تاريخ 23/12/2025) ---
-        // بما أن التاريخ في المستقبل بناء على النص، سأجعله يحسب التنازلي أو التصاعدي
-        const targetDate = new Date("Dec 23, 2025 00:00:00").getTime();
-        
-        setInterval(() => {
-            const now = new Date().getTime();
-            let distance = now - targetDate; 
+        // إذا كبس "no" تختفي ويظهر رسالة بليز كول يس
+        function sayNo() {
+            // إخفاء الزر no والإبقاء على yes فقط كما طلبت
+            document.getElementById('btn-no').style.display = 'none';
             
-            // إذا كان التاريخ في المستقبل نأخذ القيمة المطلقة
-            if(distance < 0) distance = Math.abs(distance);
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = days.toString().padStart(2, '0');
-            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
-            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
-        }, 1000);
-
-        // --- 5. مشغل الموسيقى ---
-        const audio = document.getElementById('bg-audio');
-        const vinyl = document.getElementById('vinyl-disc');
-        const musicText = document.getElementById('music-text');
-        let isPlaying = false;
-
-        function toggleMusic() {
-            if(isPlaying) {
-                audio.pause();
-                vinyl.style.animationPlayState = 'paused';
-                musicText.innerText = 'تشغيل الموسيقى 🎵';
-            } else {
-                audio.play();
-                vinyl.style.animationPlayState = 'running';
-                musicText.innerText = 'إيقاف الموسيقى ⏸️';
-            }
-            isPlaying = !isPlaying;
+            // إخفاء الشاشة الحالية وإظهار شاشة please say yes
+            document.querySelectorAll('.paper-card').forEach(card => card.classList.remove('active'));
+            document.getElementById('step-please-yes').classList.add('active');
         }
 
-        // --- 6. رسائل الحب العشوائية ---
+        // إذا كبس "yes" أو "fine" ينفتح باقي الموقع
+        function sayYes() {
+            // إخفاء كل شاشات البداية
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step-please-yes').style.display = 'none';
+            
+            // إظهار المحتوى الأساسي ليتم التمرير للأسفل (Scrolling)
+            const mainContent = document.getElementById('main-content');
+            mainContent.style.display = 'flex';
+            
+            // تمرير الشاشة للأعلى ببطء لرؤية أول قسم
+            document.getElementById('scroll-area').scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // فتح وإغلاق الظروف بضغطة زر
+        function toggleEnvelope(element) {
+            const content = element.querySelector('.envelope-content');
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+            } else {
+                // إغلاق البقية أولاً (اختياري)
+                document.querySelectorAll('.envelope-content').forEach(el => el.style.display = 'none');
+                // فتح الحالي
+                content.style.display = 'block';
+            }
+        }
+
+        // رسائل الحب العشوائية
         const messages = [
             "أحب الطريقة التي تجعلني أبتسم بها دون سبب.",
             "صوتك هو أهدأ مكان في هذا العالم بالنسبة لي.",
             "أنت لست حبيبي فقط، أنت كل أشيائي الجميلة.",
             "معك، كل الأيام العادية تصبح استثنائية.",
             "أحب كيف تجعلني أشعر بالأمان حتى والمسافات بيننا.",
-            "أنت العوض الجميل الذي أرسله الله لقلبي.",
-            "أتمنى لو أستطيع أن أخبئك داخل قلبي عن كل العالم.",
-            "لم أحب شيئاً في حياتي كما أحببت وجودك فيها.",
-            "أنت دعائي الذي استجابه الله.",
-            "وإن كثرت أشيائي الجميلة، تبقى أنت أجملها."
+            "أنت العوض الجميل الذي أرسله الله لقلبي."
         ];
 
         function generateMessage() {
             const randomIndex = Math.floor(Math.random() * messages.length);
             const msgElement = document.getElementById('random-msg');
-            msgElement.style.opacity = 0;
-            setTimeout(() => {
-                msgElement.innerText = messages[randomIndex];
-                msgElement.style.opacity = 1;
-                msgElement.style.transition = 'opacity 0.5s';
-            }, 300);
+            msgElement.innerHTML = `<strong style="color: #9e3d49; font-family: 'Amiri', serif; font-size: 1.4rem;">${messages[randomIndex]}</strong>`;
         }
     </script>
 </body>
