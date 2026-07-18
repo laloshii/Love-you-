@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Great+Vibes&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* المتغيرات الأساسية للألوان بناءً على الصور */
+        /* المتغيرات الأساسية للألوان */
         :root {
             --plaid-pink: #ffdce3;
             --plaid-white: #ffffff;
@@ -35,7 +35,7 @@
             overflow-x: hidden;
         }
 
-        /* نافذة الماك (لتشبه الصورة تماماً) */
+        /* نافذة الماك */
         .mac-window {
             width: 100%;
             max-width: 600px;
@@ -91,9 +91,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center; /* توسيط البطاقة في منتصف الشاشة دائماً */
         }
 
-        /* البطاقة الورقية (شكل ممزق ولطيف) */
+        /* البطاقة الورقية */
         .paper-card {
             background: var(--paper-bg);
             width: 100%;
@@ -103,29 +104,29 @@
             padding: 40px 20px;
             text-align: center;
             position: relative;
-            margin-bottom: 30px;
-            display: none; /* يتم التحكم بها عبر الجافاسكريبت */
-            animation: fadeIn 0.8s ease-in-out forwards;
+            display: none; /* إخفاء الكل بشكل افتراضي */
+            animation: fadeIn 0.6s ease-in-out forwards;
         }
 
+        /* الكلاس الذي يظهر البطاقة النشطة */
         .paper-card.active {
             display: block;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* زينة الوردة في الزاوية */
+        /* زينة الوردة في الزاوية (باستخدام CSS ورموز تعبيرية لكي لا تتعطل أبداً) */
         .floral-corner {
             position: absolute;
-            top: -15px;
-            right: -15px;
-            width: 100px;
-            pointer-events: none;
-            opacity: 0.9;
-            z-index: 2;
+            top: 5px;
+            right: 15px;
+            font-size: 2.5rem;
+            opacity: 0.8;
+            user-select: none;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
         }
 
         /* النصوص */
@@ -161,6 +162,7 @@
             width: 130px;
             margin: 10px auto 20px;
             display: block;
+            border-radius: 10px;
         }
 
         /* الأزرار الكيوت */
@@ -168,7 +170,7 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 15px;
+            margin-top: 20px;
             min-height: 40px;
         }
         .cute-btn {
@@ -189,6 +191,19 @@
             transform: translateY(-2px);
         }
 
+        /* قسم "هل نكمل؟" الموحد */
+        .continue-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #ffb6c1;
+        }
+        .continue-text {
+            font-family: 'Amiri', serif;
+            color: var(--text-red);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
         /* --- الأقسام الإضافية --- */
         
         /* قسم المسافة (خريطة) */
@@ -205,6 +220,7 @@
             align-items: center;
             padding: 0 20px;
             overflow: hidden;
+            background-color: #fff9f9;
         }
         .pin { z-index: 2; text-align: center; }
         .pin span { font-size: 1.8rem; }
@@ -256,7 +272,7 @@
             margin: 0;
         }
 
-        /* قائمة الأمنيات (Checklist) */
+        /* قائمة الأمنيات */
         .checklist {
             text-align: right;
             margin-top: 20px;
@@ -311,12 +327,6 @@
             line-height: 1.7;
         }
 
-        /* حاوية الأقسام الرئيسية المخفية في البداية */
-        #main-content {
-            display: none;
-            width: 100%;
-        }
-
     </style>
 </head>
 <body>
@@ -332,208 +342,239 @@
         <!-- مساحة المحتوى -->
         <div class="content-area" id="scroll-area">
             
-            <!-- الشاشة 1: I made something for you -->
+            <!-- الشاشة 1 -->
             <div class="paper-card active" id="step1">
-                <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                <div class="floral-corner">🌸</div>
                 <div class="english-text">I made something<br>for you</div>
                 <img src="https://media.tenor.com/PZcT28CptXAAAAAj/peach-and-goma-peach-cat.gif" class="cute-gif" alt="cat">
                 <div class="btn-container">
-                    <button class="cute-btn" onclick="nextStep(2)">what?</button>
+                    <button class="cute-btn" onclick="nextCard(2)">what?</button>
                 </div>
             </div>
 
-            <!-- الشاشة 2: Do you love me? -->
+            <!-- الشاشة 2: سؤال الحب الأول -->
             <div class="paper-card" id="step2">
-                <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                <div class="floral-corner">🌸</div>
                 <div class="english-text">Do you love me?</div>
-                <img src="https://media.tenor.com/81Y7y6U6D6wAAAAj/tkthao219-bubududu.gif" class="cute-gif" alt="bears hugging">
-                <div class="btn-container" id="love-buttons">
-                    <button class="cute-btn" onclick="sayYes()">yes</button>
-                    <button class="cute-btn" id="btn-no" onclick="sayNo()">no</button>
-                </div>
-            </div>
-
-            <!-- الشاشة 3: Please say yes (تظهر فقط إذا كبس لا) -->
-            <div class="paper-card" id="step-please-yes">
-                <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
-                <div class="english-text">please say<br>yes!</div>
-                <img src="https://media.tenor.com/T0bS1Y4L-P0AAAAj/sad-bear.gif" class="cute-gif" alt="sad cat">
+                <img src="https://media.tenor.com/81Y7y6U6D6wAAAAj/tkthao219-bubududu.gif" class="cute-gif" alt="bears">
                 <div class="btn-container">
-                    <button class="cute-btn" onclick="sayYes()">fine</button>
+                    <button class="cute-btn" onclick="nextCard(3)">yes</button>
+                    <button class="cute-btn" onclick="hideBtn(this)">no</button>
                 </div>
             </div>
 
-            <!-- ================= باقي الموقع (يظهر بعد الموافقة) ================= -->
-            <div id="main-content">
+            <!-- الشاشة 3: القصة -->
+            <div class="paper-card" id="step3">
+                <div class="floral-corner">🌸</div>
+                <h2 class="arabic-text">من حيث بدأ كل شيء</h2>
+                <img src="https://media.tenor.com/hR-A6O9l0p0AAAAj/milk-and-mocha.gif" class="cute-gif" alt="typing">
+                <p class="arabic-body">
+                    لم يكن هناك لقاء أول، ولا موعد غرامي...<br>
+                    فقط محادثة بسيطة، وروحان وجدا بعضهما من خلف الشاشات.<br>
+                    هكذا، وبكل بساطة، بدأت أجمل قصة في حياتي.
+                </p>
+                <!-- سؤال التكملة -->
+                <div class="continue-section">
+                    <p class="continue-text">هل نكمل؟</p>
+                    <div class="btn-container">
+                        <button class="cute-btn" onclick="nextCard(4)">نعم</button>
+                        <button class="cute-btn" onclick="hideBtn(this)">لا</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشاشة 4: العداد -->
+            <div class="paper-card" id="step4">
+                <div class="floral-corner">🌸</div>
+                <h2 class="arabic-text">23 ديسمبر 2025 ❤️</h2>
+                <p class="arabic-body">اليوم الذي أخبرتني فيه أنك تحبني.<br>يوم سأحتفظ به قريباً من قلبي.</p>
+                <div class="counter-box">
+                    <div class="time-box"><span id="days">00</span><p>أيام</p></div>
+                    <div class="time-box"><span id="hours">00</span><p>ساعات</p></div>
+                    <div class="time-box"><span id="minutes">00</span><p>دقائق</p></div>
+                    <div class="time-box"><span id="seconds">00</span><p>ثواني</p></div>
+                </div>
+                <div class="continue-section">
+                    <p class="continue-text">هل نكمل؟</p>
+                    <div class="btn-container">
+                        <button class="cute-btn" onclick="nextCard(5)">نعم</button>
+                        <button class="cute-btn" onclick="hideBtn(this)">لا</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشاشة 5: المسافة -->
+            <div class="paper-card" id="step5">
+                <div class="floral-corner">🌸</div>
+                <h2 class="arabic-text">مسافات تفرقنا، وقلوب تجمعنا</h2>
+                <p class="arabic-body">المسافة لم تزد قصتنا إلا جمالاً.</p>
+                <div class="map-container">
+                    <div class="pin"><span>🇹🇷</span><br><strong>تركيا</strong></div>
+                    <div class="thread" id="red-thread"></div>
+                    <div class="airplane" id="plane">✈️</div>
+                    <div class="pin"><span>🇱🇧</span><br><strong>لبنان</strong></div>
+                </div>
+                <div class="continue-section">
+                    <p class="continue-text">هل نكمل؟</p>
+                    <div class="btn-container">
+                        <button class="cute-btn" onclick="nextCard(6)">نعم</button>
+                        <button class="cute-btn" onclick="hideBtn(this)">لا</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشاشة 6: الظروف -->
+            <div class="paper-card" id="step6">
+                <div class="floral-corner">🌸</div>
+                <h2 class="arabic-text">افتح هذه الرسائل عندما... 💌</h2>
+                <p class="arabic-body">اضغط على الظرف لتقرأ رسالتي</p>
+                <div class="envelope-grid">
+                    <div class="envelope" onclick="toggleEnvelope(this)">
+                        <strong>تكون حزين 🥺</strong>
+                        <div class="envelope-content">
+                            يا مهجة الروح ما بالك من الحزن؟<br>
+                            لا بأس فأنا معك، كلف كلماتك عناء المشقة وبحها لي.<br>
+                            دعني أكن لك بيتك الدافئ.<br>
+                            لا تبتئس فإن الله معنا.
+                        </div>
+                    </div>
+                    <div class="envelope" onclick="toggleEnvelope(this)">
+                        <strong>تكون مشتاق 💕</strong>
+                        <div class="envelope-content">
+                            وأنا مشتاقتلكككك بالقاف، ياروح الروح أنت.<br>
+                            الله يجمعني فيك وأحضنك لصدري بقوووووة.
+                        </div>
+                    </div>
+                    <div class="envelope" onclick="toggleEnvelope(this)">
+                        <strong>نكون متزاعلين 🫣</strong>
+                        <div class="envelope-content">
+                            كله بهون، المهم ما نخسر بعض.<br>
+                            تعال نتناقش ونتصالح وما نكون نحنا والدنيا ع بعض.<br>
+                            وأتذكر...<br>
+                            بحبك ع طووووول.
+                        </div>
+                    </div>
+                    <div class="envelope" onclick="toggleEnvelope(this)">
+                        <strong>تحتاج تحفيز 💪</strong>
+                        <div class="envelope-content">
+                            كل مرة بقلك ياها وبرجع بعيدها، أنا شايفة فيك رجل قوي، حنون ودافي وساندة ظهري فيه.<br>
+                            عزيمتك وطاقتك وتعبك لتوصل إلي، صدقني رح عوضلك ياها كلها يا روحي.<br>
+                            يسلملي حبيبي القوي.
+                        </div>
+                    </div>
+                </div>
+                <div class="continue-section">
+                    <p class="continue-text">هل نكمل؟</p>
+                    <div class="btn-container">
+                        <button class="cute-btn" onclick="nextCard(7)">نعم</button>
+                        <button class="cute-btn" onclick="hideBtn(this)">لا</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشاشة 7: المستقبل -->
+            <div class="paper-card" id="step7">
+                <div class="floral-corner">🌸</div>
+                <h2 class="arabic-text">مستقبلنا معاً 🏡</h2>
+                <p class="arabic-body">أشياء أحلم بفعلها معك يوماً ما:</p>
+                <div class="checklist">
+                    <label class="checklist-item"><input type="checkbox"> حضننا الأول اللطيف</label>
+                    <label class="checklist-item"><input type="checkbox"> شرب القهوة معاً في الصباح</label>
+                    <label class="checklist-item"><input type="checkbox"> التقاط أول صورة تجمعنا</label>
+                    <label class="checklist-item"><input type="checkbox"> مشاهدة الغروب وأنا أمسك يدك</label>
+                    <label class="checklist-item"><input type="checkbox"> السفر معاً حول العالم</label>
+                    <label class="checklist-item"><input type="checkbox"> بناء مستقبلنا وبيت دافئ</label>
+                </div>
+                <div class="continue-section">
+                    <p class="continue-text">هل نكمل؟</p>
+                    <div class="btn-container">
+                        <button class="cute-btn" onclick="nextCard(8)">نعم</button>
+                        <button class="cute-btn" onclick="hideBtn(this)">لا</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشاشة 8: جرعة حب -->
+            <div class="paper-card" id="step8">
+                <div class="floral-corner">🌸</div>
+                <h2 class="arabic-text">جرعة حب سريعة ❤️</h2>
+                <p class="arabic-body" id="random-msg">اضغط على الزر لترى رسالتي لك...</p>
+                <button class="cute-btn" onclick="generateMessage()" style="margin-bottom: 15px;">اضغط هنا</button>
+                <img src="https://media.tenor.com/2RoZbEqZqT0AAAAj/peach-goma.gif" class="cute-gif" alt="kiss">
                 
-                <!-- 1. قصة البداية -->
-                <div class="paper-card active">
-                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
-                    <h2 class="arabic-text">من حيث بدأ كل شيء</h2>
-                    <img src="https://media.tenor.com/hR-A6O9l0p0AAAAj/milk-and-mocha.gif" class="cute-gif" alt="typing">
-                    <p class="arabic-body">
-                        لم يكن هناك لقاء أول، ولا موعد غرامي...<br>
-                        فقط محادثة بسيطة، وروحان وجدا بعضهما من خلف الشاشات.<br>
-                        هكذا، وبكل بساطة، بدأت أجمل قصة في حياتي.
-                    </p>
-                </div>
-
-                <!-- 2. اليوم الأهم (العداد) -->
-                <div class="paper-card active">
-                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
-                    <h2 class="arabic-text">23 ديسمبر 2025 ❤️</h2>
-                    <p class="arabic-body">اليوم الذي أخبرتني فيه أنك تحبني.<br>يوم سأحتفظ به قريباً من قلبي.</p>
-                    
-                    <div class="counter-box">
-                        <div class="time-box"><span id="days">00</span><p>أيام</p></div>
-                        <div class="time-box"><span id="hours">00</span><p>ساعات</p></div>
-                        <div class="time-box"><span id="minutes">00</span><p>دقائق</p></div>
-                        <div class="time-box"><span id="seconds">00</span><p>ثواني</p></div>
+                <div class="continue-section">
+                    <p class="continue-text">هل نكمل؟</p>
+                    <div class="btn-container">
+                        <button class="cute-btn" onclick="nextCard(9)">نعم</button>
+                        <button class="cute-btn" onclick="hideBtn(this)">لا</button>
                     </div>
                 </div>
-
-                <!-- 3. قسم المسافة -->
-                <div class="paper-card active" id="distance-card">
-                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
-                    <h2 class="arabic-text">مسافات تفرقنا، وقلوب تجمعنا</h2>
-                    <p class="arabic-body">المسافة لم تزد قصتنا إلا جمالاً.</p>
-                    
-                    <div class="map-container">
-                        <div class="pin"><span>🇹🇷</span><br><strong>تركيا</strong></div>
-                        <div class="thread" id="red-thread"></div>
-                        <div class="airplane" id="plane">✈️</div>
-                        <div class="pin"><span>🇱🇧</span><br><strong>لبنان</strong></div>
-                    </div>
-                </div>
-
-                <!-- 4. رسائل افتح عندما -->
-                <div class="paper-card active">
-                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
-                    <h2 class="arabic-text">افتح هذه الرسائل عندما... 💌</h2>
-                    <p class="arabic-body">اضغط على الظرف لتقرأ رسالتي</p>
-                    
-                    <div class="envelope-grid">
-                        <div class="envelope" onclick="toggleEnvelope(this)">
-                            <strong>تكون حزين 🥺</strong>
-                            <div class="envelope-content">
-                                يا مهجة الروح ما بالك من الحزن؟<br>
-                                لا بأس فأنا معك، كلف كلماتك عناء المشقة وبحها لي.<br>
-                                دعني أكن لك بيتك الدافئ.<br>
-                                لا تبتئس فإن الله معنا.
-                            </div>
-                        </div>
-                        <div class="envelope" onclick="toggleEnvelope(this)">
-                            <strong>تكون مشتاق 💕</strong>
-                            <div class="envelope-content">
-                                وأنا مشتاقتلكككك بالقاف، ياروح الروح أنت.<br>
-                                الله يجمعني فيك وأحضنك لصدري بقوووووة.
-                            </div>
-                        </div>
-                        <div class="envelope" onclick="toggleEnvelope(this)">
-                            <strong>نكون متزاعلين 🫣</strong>
-                            <div class="envelope-content">
-                                كله بهون، المهم ما نخسر بعض.<br>
-                                تعال نتناقش ونتصالح وما نكون نحنا والدنيا ع بعض.<br>
-                                وأتذكر...<br>
-                                بحبك ع طووووول.
-                            </div>
-                        </div>
-                        <div class="envelope" onclick="toggleEnvelope(this)">
-                            <strong>تحتاج تحفيز 💪</strong>
-                            <div class="envelope-content">
-                                كل مرة بقلك ياها وبرجع بعيدها، أنا شايفة فيك رجل قوي، حنون ودافي وساندة ظهري فيه.<br>
-                                عزيمتك وطاقتك وتعبك لتوصل إلي، صدقني رح عوضلك ياها كلها يا روحي.<br>
-                                يسلملي حبيبي القوي.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5. قائمة أمنيات المستقبل -->
-                <div class="paper-card active">
-                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
-                    <h2 class="arabic-text">مستقبلنا معاً 🏡</h2>
-                    <p class="arabic-body">أشياء أحلم بفعلها معك يوماً ما:</p>
-                    <div class="checklist">
-                        <label class="checklist-item"><input type="checkbox"> حضننا الأول اللطيف</label>
-                        <label class="checklist-item"><input type="checkbox"> شرب القهوة معاً في الصباح</label>
-                        <label class="checklist-item"><input type="checkbox"> التقاط أول صورة تجمعنا</label>
-                        <label class="checklist-item"><input type="checkbox"> مشاهدة الغروب وأنا أمسك يدك</label>
-                        <label class="checklist-item"><input type="checkbox"> السفر معاً حول العالم</label>
-                        <label class="checklist-item"><input type="checkbox"> بناء مستقبلنا وبيت دافئ</label>
-                    </div>
-                </div>
-
-                <!-- 6. زر عشوائي للحب -->
-                <div class="paper-card active">
-                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
-                    <h2 class="arabic-text">جرعة حب سريعة ❤️</h2>
-                    <p class="arabic-body" id="random-msg">اضغط على الزر لترى رسالتي لك...</p>
-                    <img src="https://media.tenor.com/2RoZbEqZqT0AAAAj/peach-goma.gif" class="cute-gif" alt="kiss">
-                    <button class="cute-btn" onclick="generateMessage()">اضغط هنا</button>
-                </div>
-
-                <!-- 7. إهداء الأغنية -->
-                <div class="paper-card active">
-                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
-                    <h2 class="arabic-text">إهداء خاص لقلبك 🎧</h2>
-                    <p class="arabic-body">أغنيتنا... تملي معاك - عمرو دياب</p>
-                    <!-- مشغل يوتيوب مصغر للأغنية لتجنب مشاكل حقوق الصوتيات ولتعمل بشكل موثوق -->
-                    <iframe width="100%" height="150" src="https://www.youtube.com/embed/2_8r4IuM0u4?controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 15px; margin-top: 15px; border: 2px solid #ffe0e5;"></iframe>
-                </div>
-
-                <!-- 8. الختام -->
-                <div class="paper-card active" style="margin-bottom: 50px;">
-                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
-                    <h2 class="arabic-text">وختاماً يا نبض قلبي...</h2>
-                    <p class="arabic-body">
-                        مهما فرقتنا المسافات، ستبقى دائماً مكاني المفضل.<br><br>
-                        <strong>أحبك للأبد ❤️</strong><br>
-                        23 • 12 • 2025
-                    </p>
-                </div>
-
             </div>
+
+            <!-- الشاشة 9: الأغنية -->
+            <div class="paper-card" id="step9">
+                <div class="floral-corner">🌸</div>
+                <h2 class="arabic-text">إهداء خاص لقلبك 🎧</h2>
+                <p class="arabic-body">أغنيتنا... تملي معاك - عمرو دياب</p>
+                <!-- استخدمت رابط يوتيوب رسمي وموثوق ليعمل دائماً -->
+                <iframe width="100%" height="200" src="https://www.youtube.com/embed/bU535xG4LTo?rel=0&showinfo=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 15px; margin-top: 15px; border: 2px solid #ffe0e5;"></iframe>
+                
+                <div class="continue-section">
+                    <p class="continue-text">هل نكمل؟</p>
+                    <div class="btn-container">
+                        <button class="cute-btn" onclick="nextCard(10)">نعم</button>
+                        <button class="cute-btn" onclick="hideBtn(this)">لا</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشاشة 10: النهاية -->
+            <div class="paper-card" id="step10">
+                <div class="floral-corner">🌸</div>
+                <h2 class="arabic-text">وختاماً يا نبض قلبي...</h2>
+                <p class="arabic-body">
+                    مهما فرقتنا المسافات، ستبقى دائماً مكاني المفضل.<br><br>
+                    <strong>أحبك للأبد ❤️</strong><br>
+                    23 • 12 • 2025
+                </p>
+            </div>
+
         </div>
     </div>
 
     <script>
-        // دالة التنقل بين الشاشات الافتتاحية
-        function nextStep(stepNumber) {
-            document.querySelectorAll('#step1, #step2, #step-please-yes').forEach(card => card.style.display = 'none');
-            document.getElementById('step' + stepNumber).style.display = 'block';
+        // دالة إخفاء زر "لا" عند الضغط عليه
+        function hideBtn(button) {
+            button.style.display = 'none';
         }
 
-        // إذا كبس "no"
-        function sayNo() {
-            document.getElementById('btn-no').style.display = 'none';
-            document.querySelectorAll('#step1, #step2').forEach(card => card.style.display = 'none');
-            document.getElementById('step-please-yes').style.display = 'block';
-        }
-
-        // إذا كبس "yes" أو "fine" ينفتح باقي الموقع
-        function sayYes() {
-            // إخفاء كل شاشات البداية
-            document.getElementById('step1').style.display = 'none';
-            document.getElementById('step2').style.display = 'none';
-            document.getElementById('step-please-yes').style.display = 'none';
+        // دالة الانتقال للبطاقة التالية
+        function nextCard(stepNumber) {
+            // إخفاء جميع البطاقات
+            document.querySelectorAll('.paper-card').forEach(card => {
+                card.classList.remove('active');
+            });
             
-            // إظهار المحتوى الأساسي ليتم التمرير للأسفل
-            const mainContent = document.getElementById('main-content');
-            mainContent.style.display = 'block'; // تفعيل العرض
-            
-            // تمرير الشاشة للأعلى لرؤية أول قسم
-            document.getElementById('scroll-area').scrollTo({ top: 0, behavior: 'smooth' });
+            // إظهار البطاقة المطلوبة
+            const nextStep = document.getElementById('step' + stepNumber);
+            if(nextStep) {
+                nextStep.classList.add('active');
+                
+                // التمرير لأعلى البطاقة لضمان رؤيتها بشكل كامل
+                document.getElementById('scroll-area').scrollTo({ top: 0, behavior: 'smooth' });
 
-            // تفعيل حركة الطائرة والخط الأحمر بعد ثانيتين من فتح الموقع
-            setTimeout(() => {
-                document.getElementById('red-thread').style.width = '60%';
-                document.getElementById('plane').style.opacity = '1';
-                document.getElementById('plane').style.left = '70%';
-            }, 1000);
+                // تشغيل حركة خيط المسافة إذا وصلنا للبطاقة 5
+                if(stepNumber === 5) {
+                    setTimeout(() => {
+                        document.getElementById('red-thread').style.width = '60%';
+                        document.getElementById('plane').style.opacity = '1';
+                        document.getElementById('plane').style.left = '70%';
+                    }, 500);
+                }
+            }
         }
 
-        // فتح وإغلاق الظروف بضغطة زر
+        // دالة فتح وإغلاق الظروف
         function toggleEnvelope(element) {
             const content = element.querySelector('.envelope-content');
             if (content.style.display === 'block') {
@@ -560,22 +601,25 @@
             msgElement.innerHTML = `<strong style="color: #9e3d49; font-family: 'Amiri', serif; font-size: 1.4rem;">${messages[randomIndex]}</strong>`;
         }
 
-        // العداد الزمني (تاريخ 23/12/2025)
+        // العداد الزمني
         const targetDate = new Date("Dec 23, 2025 00:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
             let distance = now - targetDate; 
-            if(distance < 0) distance = Math.abs(distance); // حتى يعمل سواء قبل أو بعد التاريخ
+            if(distance < 0) distance = Math.abs(distance); 
 
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerText = days.toString().padStart(2, '0');
-            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
-            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
-            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+            const dEl = document.getElementById("days");
+            if(dEl) {
+                dEl.innerText = days.toString().padStart(2, '0');
+                document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+                document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+                document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+            }
         }, 1000);
     </script>
 </body>
