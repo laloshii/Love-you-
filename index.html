@@ -45,12 +45,12 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            height: 100vh;
         }
 
         @media (min-width: 768px) {
             .mac-window {
-                min-height: 90vh;
+                height: 90vh;
                 margin: 20px 0;
             }
         }
@@ -65,6 +65,7 @@
             gap: 8px;
             border-bottom: 1px solid #ddd;
             direction: ltr;
+            flex-shrink: 0;
         }
         .dot {
             width: 12px;
@@ -85,10 +86,11 @@
             background-size: 40px 40px;
             position: relative;
             padding: 30px 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-y: auto;
         }
 
         /* البطاقة الورقية (شكل ممزق ولطيف) */
@@ -96,23 +98,23 @@
             background: var(--paper-bg);
             width: 100%;
             max-width: 500px;
-            /* شكل حواف غير منتظم لتبدو كالورقة */
             border-radius: 15px 30px 20px 40px;
             box-shadow: 3px 5px 15px rgba(0,0,0,0.1);
             padding: 40px 20px;
             text-align: center;
             position: relative;
             margin-bottom: 30px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-in-out;
-            display: none; /* سيتم إظهارها عبر الجافاسكربت */
+            display: none; /* يتم التحكم بها عبر الجافاسكريبت */
+            animation: fadeIn 0.8s ease-in-out forwards;
         }
 
         .paper-card.active {
             display: block;
-            opacity: 1;
-            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* زينة الوردة في الزاوية */
@@ -123,18 +125,19 @@
             width: 100px;
             pointer-events: none;
             opacity: 0.9;
+            z-index: 2;
         }
 
-        /* النصوص الإنجليزية الأنيقة */
+        /* النصوص */
         .english-text {
             font-family: 'Great Vibes', cursive;
             font-size: 2.8rem;
             color: var(--text-red);
             margin-bottom: 20px;
             line-height: 1.2;
+            direction: ltr;
         }
 
-        /* النصوص العربية الأنيقة والمستقيمة */
         .arabic-text {
             font-family: 'Amiri', serif;
             font-size: 1.6rem;
@@ -142,7 +145,7 @@
             font-weight: 700;
             margin-bottom: 15px;
             line-height: 1.6;
-            font-style: normal; /* تأكيد عدم الميلان */
+            font-style: normal;
         }
         
         .arabic-body {
@@ -153,7 +156,7 @@
             font-weight: 500;
         }
 
-        /* الصور المتحركة (الدباديب) */
+        /* الصور المتحركة */
         .cute-gif {
             width: 130px;
             margin: 10px auto 20px;
@@ -186,12 +189,99 @@
             transform: translateY(-2px);
         }
 
-        /* --- الأقسام المخفية للأسفل --- */
-        #main-content {
-            display: none; /* يظهر بعد الواجهة */
+        /* --- الأقسام الإضافية --- */
+        
+        /* قسم المسافة (خريطة) */
+        .map-container {
+            position: relative;
             width: 100%;
-            flex-direction: column;
+            height: 150px;
+            background: url('https://www.transparenttextures.com/patterns/notebook.png');
+            border-radius: 15px;
+            border: 2px dashed #ffb6c1;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
+            padding: 0 20px;
+            overflow: hidden;
+        }
+        .pin { z-index: 2; text-align: center; }
+        .pin span { font-size: 1.8rem; }
+        .pin strong { color: var(--text-red); font-size: 0.9rem; }
+        .thread {
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            width: 0%;
+            height: 2px;
+            background: #d32f2f;
+            z-index: 1;
+            transition: width 2s ease-in-out;
+        }
+        .airplane {
+            position: absolute;
+            top: 40%;
+            left: 15%;
+            font-size: 1.2rem;
+            transition: left 2s ease-in-out;
+            opacity: 0;
+        }
+
+        /* العداد الزمني */
+        .counter-box {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            direction: ltr;
+        }
+        .time-box {
+            background: #fff;
+            border: 2px solid #ffe0e5;
+            padding: 10px;
+            border-radius: 12px;
+            min-width: 60px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        .time-box span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-red);
+        }
+        .time-box p {
+            font-size: 0.8rem;
+            color: #726255;
+            margin: 0;
+        }
+
+        /* قائمة الأمنيات (Checklist) */
+        .checklist {
+            text-align: right;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 0 15px;
+        }
+        .checklist-item {
+            background: #fff;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid #ffe0e5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-red);
+            font-family: 'Tajawal', sans-serif;
+            font-weight: bold;
+        }
+        .checklist-item input {
+            accent-color: var(--text-red);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
         }
 
         /* رسائل الظروف */
@@ -217,8 +307,14 @@
             border-top: 1px solid #ffe0e5;
             font-family: 'Amiri', serif;
             color: var(--text-red);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             line-height: 1.7;
+        }
+
+        /* حاوية الأقسام الرئيسية المخفية في البداية */
+        #main-content {
+            display: none;
+            width: 100%;
         }
 
     </style>
@@ -238,7 +334,6 @@
             
             <!-- الشاشة 1: I made something for you -->
             <div class="paper-card active" id="step1">
-                <!-- زهرة من الإنترنت شفافة لتشبه الزينة -->
                 <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
                 <div class="english-text">I made something<br>for you</div>
                 <img src="https://media.tenor.com/PZcT28CptXAAAAAj/peach-and-goma-peach-cat.gif" class="cute-gif" alt="cat">
@@ -268,10 +363,10 @@
                 </div>
             </div>
 
-            <!-- باقي الموقع (يظهر بعد الموافقة) -->
+            <!-- ================= باقي الموقع (يظهر بعد الموافقة) ================= -->
             <div id="main-content">
                 
-                <!-- قصة البداية -->
+                <!-- 1. قصة البداية -->
                 <div class="paper-card active">
                     <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
                     <h2 class="arabic-text">من حيث بدأ كل شيء</h2>
@@ -283,14 +378,41 @@
                     </p>
                 </div>
 
-                <!-- رسائل افتح عندما -->
+                <!-- 2. اليوم الأهم (العداد) -->
+                <div class="paper-card active">
+                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                    <h2 class="arabic-text">23 ديسمبر 2025 ❤️</h2>
+                    <p class="arabic-body">اليوم الذي أخبرتني فيه أنك تحبني.<br>يوم سأحتفظ به قريباً من قلبي.</p>
+                    
+                    <div class="counter-box">
+                        <div class="time-box"><span id="days">00</span><p>أيام</p></div>
+                        <div class="time-box"><span id="hours">00</span><p>ساعات</p></div>
+                        <div class="time-box"><span id="minutes">00</span><p>دقائق</p></div>
+                        <div class="time-box"><span id="seconds">00</span><p>ثواني</p></div>
+                    </div>
+                </div>
+
+                <!-- 3. قسم المسافة -->
+                <div class="paper-card active" id="distance-card">
+                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                    <h2 class="arabic-text">مسافات تفرقنا، وقلوب تجمعنا</h2>
+                    <p class="arabic-body">المسافة لم تزد قصتنا إلا جمالاً.</p>
+                    
+                    <div class="map-container">
+                        <div class="pin"><span>🇹🇷</span><br><strong>تركيا</strong></div>
+                        <div class="thread" id="red-thread"></div>
+                        <div class="airplane" id="plane">✈️</div>
+                        <div class="pin"><span>🇱🇧</span><br><strong>لبنان</strong></div>
+                    </div>
+                </div>
+
+                <!-- 4. رسائل افتح عندما -->
                 <div class="paper-card active">
                     <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
                     <h2 class="arabic-text">افتح هذه الرسائل عندما... 💌</h2>
                     <p class="arabic-body">اضغط على الظرف لتقرأ رسالتي</p>
                     
                     <div class="envelope-grid">
-                        <!-- رسالة 1 -->
                         <div class="envelope" onclick="toggleEnvelope(this)">
                             <strong>تكون حزين 🥺</strong>
                             <div class="envelope-content">
@@ -300,8 +422,6 @@
                                 لا تبتئس فإن الله معنا.
                             </div>
                         </div>
-
-                        <!-- رسالة 2 -->
                         <div class="envelope" onclick="toggleEnvelope(this)">
                             <strong>تكون مشتاق 💕</strong>
                             <div class="envelope-content">
@@ -309,8 +429,6 @@
                                 الله يجمعني فيك وأحضنك لصدري بقوووووة.
                             </div>
                         </div>
-
-                        <!-- رسالة 3 -->
                         <div class="envelope" onclick="toggleEnvelope(this)">
                             <strong>نكون متزاعلين 🫣</strong>
                             <div class="envelope-content">
@@ -320,8 +438,6 @@
                                 بحبك ع طووووول.
                             </div>
                         </div>
-
-                        <!-- رسالة 4 -->
                         <div class="envelope" onclick="toggleEnvelope(this)">
                             <strong>تحتاج تحفيز 💪</strong>
                             <div class="envelope-content">
@@ -333,7 +449,22 @@
                     </div>
                 </div>
 
-                <!-- زر عشوائي للحب -->
+                <!-- 5. قائمة أمنيات المستقبل -->
+                <div class="paper-card active">
+                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                    <h2 class="arabic-text">مستقبلنا معاً 🏡</h2>
+                    <p class="arabic-body">أشياء أحلم بفعلها معك يوماً ما:</p>
+                    <div class="checklist">
+                        <label class="checklist-item"><input type="checkbox"> حضننا الأول اللطيف</label>
+                        <label class="checklist-item"><input type="checkbox"> شرب القهوة معاً في الصباح</label>
+                        <label class="checklist-item"><input type="checkbox"> التقاط أول صورة تجمعنا</label>
+                        <label class="checklist-item"><input type="checkbox"> مشاهدة الغروب وأنا أمسك يدك</label>
+                        <label class="checklist-item"><input type="checkbox"> السفر معاً حول العالم</label>
+                        <label class="checklist-item"><input type="checkbox"> بناء مستقبلنا وبيت دافئ</label>
+                    </div>
+                </div>
+
+                <!-- 6. زر عشوائي للحب -->
                 <div class="paper-card active">
                     <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
                     <h2 class="arabic-text">جرعة حب سريعة ❤️</h2>
@@ -342,8 +473,17 @@
                     <button class="cute-btn" onclick="generateMessage()">اضغط هنا</button>
                 </div>
 
-                <!-- الختام -->
+                <!-- 7. إهداء الأغنية -->
                 <div class="paper-card active">
+                    <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
+                    <h2 class="arabic-text">إهداء خاص لقلبك 🎧</h2>
+                    <p class="arabic-body">أغنيتنا... تملي معاك - عمرو دياب</p>
+                    <!-- مشغل يوتيوب مصغر للأغنية لتجنب مشاكل حقوق الصوتيات ولتعمل بشكل موثوق -->
+                    <iframe width="100%" height="150" src="https://www.youtube.com/embed/2_8r4IuM0u4?controls=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 15px; margin-top: 15px; border: 2px solid #ffe0e5;"></iframe>
+                </div>
+
+                <!-- 8. الختام -->
+                <div class="paper-card active" style="margin-bottom: 50px;">
                     <img src="https://i.ibb.co/6Hk8Z2M/pink-flower-watercolor-png.png" class="floral-corner" alt="flower">
                     <h2 class="arabic-text">وختاماً يا نبض قلبي...</h2>
                     <p class="arabic-body">
@@ -360,18 +500,15 @@
     <script>
         // دالة التنقل بين الشاشات الافتتاحية
         function nextStep(stepNumber) {
-            document.querySelectorAll('.paper-card').forEach(card => card.classList.remove('active'));
-            document.getElementById('step' + stepNumber).classList.add('active');
+            document.querySelectorAll('#step1, #step2, #step-please-yes').forEach(card => card.style.display = 'none');
+            document.getElementById('step' + stepNumber).style.display = 'block';
         }
 
-        // إذا كبس "no" تختفي ويظهر رسالة بليز كول يس
+        // إذا كبس "no"
         function sayNo() {
-            // إخفاء الزر no والإبقاء على yes فقط كما طلبت
             document.getElementById('btn-no').style.display = 'none';
-            
-            // إخفاء الشاشة الحالية وإظهار شاشة please say yes
-            document.querySelectorAll('.paper-card').forEach(card => card.classList.remove('active'));
-            document.getElementById('step-please-yes').classList.add('active');
+            document.querySelectorAll('#step1, #step2').forEach(card => card.style.display = 'none');
+            document.getElementById('step-please-yes').style.display = 'block';
         }
 
         // إذا كبس "yes" أو "fine" ينفتح باقي الموقع
@@ -381,15 +518,19 @@
             document.getElementById('step2').style.display = 'none';
             document.getElementById('step-please-yes').style.display = 'none';
             
-            // إظهار المحتوى الأساسي ليتم التمرير للأسفل (Scrolling)
+            // إظهار المحتوى الأساسي ليتم التمرير للأسفل
             const mainContent = document.getElementById('main-content');
-            mainContent.style.display = 'flex';
+            mainContent.style.display = 'block'; // تفعيل العرض
             
-            // تمرير الشاشة للأعلى ببطء لرؤية أول قسم
-            document.getElementById('scroll-area').scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            // تمرير الشاشة للأعلى لرؤية أول قسم
+            document.getElementById('scroll-area').scrollTo({ top: 0, behavior: 'smooth' });
+
+            // تفعيل حركة الطائرة والخط الأحمر بعد ثانيتين من فتح الموقع
+            setTimeout(() => {
+                document.getElementById('red-thread').style.width = '60%';
+                document.getElementById('plane').style.opacity = '1';
+                document.getElementById('plane').style.left = '70%';
+            }, 1000);
         }
 
         // فتح وإغلاق الظروف بضغطة زر
@@ -398,9 +539,7 @@
             if (content.style.display === 'block') {
                 content.style.display = 'none';
             } else {
-                // إغلاق البقية أولاً (اختياري)
                 document.querySelectorAll('.envelope-content').forEach(el => el.style.display = 'none');
-                // فتح الحالي
                 content.style.display = 'block';
             }
         }
@@ -420,6 +559,24 @@
             const msgElement = document.getElementById('random-msg');
             msgElement.innerHTML = `<strong style="color: #9e3d49; font-family: 'Amiri', serif; font-size: 1.4rem;">${messages[randomIndex]}</strong>`;
         }
+
+        // العداد الزمني (تاريخ 23/12/2025)
+        const targetDate = new Date("Dec 23, 2025 00:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            let distance = now - targetDate; 
+            if(distance < 0) distance = Math.abs(distance); // حتى يعمل سواء قبل أو بعد التاريخ
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+        }, 1000);
     </script>
 </body>
 </html>
